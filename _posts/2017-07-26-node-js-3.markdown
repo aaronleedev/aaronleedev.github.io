@@ -1,7 +1,7 @@
 ---
 layout: post
 title: node.js 전역 객체
-date:   2017-07-25 15:21:00
+date:   2017-07-26 09:21:00
 author: Aaron Lee
 categories: node.js
 tags:	node.js book study
