@@ -8,20 +8,19 @@ tags:	jekyll github
 cover:  "/assets/jekyll_github_io.png"
 ---
 
-- [github](https://github.com/) 계정 생성
-- github repository 생성
+- ### [github](https://github.com/) 계정 생성
+- ### github repository 생성
 > - repository name을 "github username.github.io"으로 생성
 > - "Initialize this repository with a README" 체크
-> ![_config.yml]({{ site.baseurl }}/images/2017-07-25-github-jekyll-01.png)
-- [wingit](https://git-scm.com/download/win) 설치
-- [Jekyll 소스코드](https://github.com/barryclark/jekyll-now) 다운
-- 새 로컬저장소에 github repository init
+- ### [wingit](https://git-scm.com/download/win) 설치
+- ### [Jekyll 소스코드](https://github.com/barryclark/jekyll-now) 다운
+- ### 새 로컬저장소에 github repository init
 > - $ git init
 > - $ git remote add origin https://github.com/username/repositoryname.git
 > - $ git pull origin master
-- github repository에 Jekyll 소스코드 push
+- ### github repository에 Jekyll 소스코드 push
 > - 새 로컬저장소에 Jekyll 소스코드 copy
 > - $ git add .
 > - $ git commit -m "commit description
 > - $ git push -u origin master
-- https://repositoryname url 확인
+- ### https://repositoryname url 확인
