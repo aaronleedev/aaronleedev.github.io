@@ -1,12 +1,5 @@
-source "https://rubygems.org"
-
-gem "autoprefixer-rails"
-gem "html-proofer"
-gem "jekyll"
-gem "jekyll-assets"
-gem "jekyll-paginate"
-gem "jekyll-sitemap"
-gem "jemoji"
-gem "mini_magick"
-gem "sass"
-gem "uglifier"
+source 'https://rubygems.org'
+gem 'jekyll'
+gem 'jekyll-archives'
+gem 'jekyll-sitemap'
+gem 'jekyll-paginate'
