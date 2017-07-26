@@ -1,6 +1,11 @@
 ---
 layout: post
 title: Jekyll을 이용한 github에 블로그 만들기
+date:   2017-07-24 11:12:00
+author: Aaron Lee
+categories: jekyll
+tags:	jekyll github
+cover:  "/assets/jekyll_github_io.png"
 ---
 
 - [github](https://github.com/) 계정 생성

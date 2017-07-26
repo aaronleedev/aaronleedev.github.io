@@ -1,14 +1,19 @@
 ---
 layout: post
-title: node.js 기본 내장 모듈
+title:  node.js 기본 내장 모듈
+date:   2017-07-26 22:23:00
+author: Aaron Lee
+categories: node.js
+tags:	node.js book study
+cover:  "/assets/node_js_book_01.png"
 ---
 
-##### os 모듈
+## os 모듈
 ```
 // os 모듈 추출
 var os = require('os');
 ```
-###### *메서드*
+### *메서드*
 - hostname( ) : 운영체제의 호스트 이름 리턴
 - type( ) : 운영체제의 이름 리턴
 - platform( ) : 운영체제의 플랫폼 리턴
