@@ -25,6 +25,7 @@ var os = require('os');
 - freemem( ) : 시스템의 사용 가능 메모리 리턴
 - cpus( ) : CPU 정보를 담은 객체 리턴
 - getNetworkInterfaces( ) : 네트워크 인터페이스 정보를 담은 배열 리턴
+---
 
 ## url 모듈
 ```
@@ -35,6 +36,7 @@ var os = require('url');
 - parse( urlStr[, parseQueryString=false, slashesDenoteHost=false] ) : URL 문자열을 URL 객체로 변환해 리턴
 - format( urlObj ) : URL 객체를 URL 문자열로 변환해 리턴
 - resolve( from, to ) : 매개변수를 조합하여 완전한 URL 문자열을 생성해 리턴
+---
 
 ## query string 모듈
 ```
@@ -44,6 +46,7 @@ var os = require('querystring');
 ### *메서드*
 - parse( str[, sep='&', ep='='] ) : 쿼리 문자열을 쿼리 객체로 변환해 리턴
 - stringify( obj[, sep='&', eq='='] ) : 쿼리 객체를 쿼리 문자열로 변환해 리턴
+
 ```
 var url = require('url');
 var querystring = require('querystring');
@@ -60,33 +63,34 @@ Command: node   "D:/node.js code/example/node.querystring.js"
   query: 'node.js' }
 Program exited with code 0
 ```
-```
-var url = require('url');
-
-console.log(url.parse('https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js', true));
-```
-```
-Command: node   "D:/node.js code/example/node.querystring.js" 
-Url {
-  protocol: 'https:',
-  slashes: true,
-  auth: null,
-  host: 'search.naver.com',
-  port: null,
-  hostname: 'search.naver.com',
-  hash: null,
-  search: '?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js',
-  query: 
-   { where: 'nexearch',
-     sm: 'top_hty',
-     fbm: '1',
-     ie: 'utf8',
-     query: 'node.js' },
-  pathname: '/search.naver',
-  path: '/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js',
-  href: 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js' }
-Program exited with code 0
-```
+> NOTE_ url 모듈을 사용하여 쿼리 객체 받아오기
+> ```
+> var url = require('url');
+> 
+> console.log(url.parse('https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js', true));
+> ```
+> ```
+> Command: node   "D:/node.js code/example/node.querystring.js" 
+> Url {
+>   protocol: 'https:',
+>   slashes: true,
+>   auth: null,
+>   host: 'search.naver.com',
+>   port: null,
+>   hostname: 'search.naver.com',
+>   hash: null,
+>   search: '?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js',
+>   query: 
+>    { where: 'nexearch',
+>      sm: 'top_hty',
+>      fbm: '1',
+>      ie: 'utf8',
+>      query: 'node.js' },
+>   pathname: '/search.naver',
+>   path: '/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js',
+>   href: 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js' }
+> Program exited with code 0
+> ```
 
 ## util 모듈
 ```
@@ -95,6 +99,7 @@ var util = require('util');
 ```
 ### *메서드*
 - format( ... ) : 매개변수로 입력한 문자열을 조합해 리턴
+
 ```
 var util = require('util');
 
