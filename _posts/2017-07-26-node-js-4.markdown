@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  node.js 기본 내장 모듈 v3
+title:  node.js 기본 내장 모듈 v5
 date:   2017-07-26 22:23:00
 author: Aaron Lee
 categories: node.js
@@ -25,7 +25,7 @@ var os = require('os');
 - freemem( ) : 시스템의 사용 가능 메모리 리턴
 - cpus( ) : CPU 정보를 담은 객체 리턴
 - getNetworkInterfaces( ) : 네트워크 인터페이스 정보를 담은 배열 리턴
-___
+_ _ _
 
 ## url 모듈
 ```
@@ -36,7 +36,7 @@ var os = require('url');
 - parse( urlStr[, parseQueryString=false, slashesDenoteHost=false] ) : URL 문자열을 URL 객체로 변환해 리턴
 - format( urlObj ) : URL 객체를 URL 문자열로 변환해 리턴
 - resolve( from, to ) : 매개변수를 조합하여 완전한 URL 문자열을 생성해 리턴
-___
+_ _ _
 
 ## query string 모듈
 ```
@@ -91,7 +91,7 @@ Program exited with code 0
 >   href: 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js' }
 > Program exited with code 0
 > ```
-___
+_ _ _
 
 ## util 모듈
 ```
@@ -112,13 +112,13 @@ Command: node   "D:/node.js code/example/node.util.js"
 52 + 273 = 325
 Program exited with code 0
 ```
-___
+_ _ _
 
 ## crypto 모듈
 해시 생성과 암호화를 수행하는 모듈
-> NOTE_ 해시(Hash)
-> 1. 키와 값을 갖는 자료형
-> 2. 전자 지문
+==NOTE_ 해시(Hash)
+1. 키와 값을 갖는 자료형
+2. 전자 지문==
 
 ```
 // crypto 모듈 추출
@@ -185,7 +185,7 @@ Command: node   "D:/node.js code/example/node.ctypto.js"
 암호화 해제:PASSWORD
 Program exited with code 0
 ```
-암호화 방법
+#### *암호화 메서드*
 - [crypto.createCipher(algorithm, key)](https://nodejs.org/api/crypto.html#crypto_crypto_createcipher_algorithm_password)
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_04.png)
 - [cipher.update(data[, inputEncoding][, outputEncoding])](https://nodejs.org/api/crypto.html#crypto_cipher_update_data_inputencoding_outputencoding)
@@ -193,10 +193,11 @@ Program exited with code 0
 - [cipher.final([outputEncoding])](https://nodejs.org/api/crypto.html#crypto_cipher_final_outputencoding)
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_06.png)
 
-암호화 해제 방법
+#### *암호화 해제 메서드*
 - [crypto.createDecipher(algorithm, key)](https://nodejs.org/api/crypto.html#crypto_crypto_createdecipher_algorithm_password)
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_07.png)
 - [decipher.update(data[, inputEncoding][, outputEncoding])](https://nodejs.org/api/crypto.html#crypto_decipher_update_data_inputencoding_outputencoding)
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_08.png)
 - [decipher.final([outputEncoding])](https://nodejs.org/api/crypto.html#crypto_decipher_final_outputencoding)
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_09.png)
+_ _ _
