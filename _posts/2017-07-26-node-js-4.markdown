@@ -25,3 +25,170 @@ var os = require('os');
 - freemem( ) : 시스템의 사용 가능 메모리 리턴
 - cpus( ) : CPU 정보를 담은 객체 리턴
 - getNetworkInterfaces( ) : 네트워크 인터페이스 정보를 담은 배열 리턴
+
+## url 모듈
+```
+// url 모듈 추출
+var os = require('url');
+```
+### *메서드*
+- parse( urlStr[, parseQueryString=false, slashesDenoteHost=false] ) : URL 문자열을 URL 객체로 변환해 리턴
+- format( urlObj ) : URL 객체를 URL 문자열로 변환해 리턴
+- resolve( from, to ) : 매개변수를 조합하여 완전한 URL 문자열을 생성해 리턴
+
+## query string 모듈
+```
+// query stringg 모듈 추출
+var os = require('querystring');
+```
+### *메서드*
+- parse( str[, sep='&', ep='='] ) : 쿼리 문자열을 쿼리 객체로 변환해 리턴
+- stringify( obj[, sep='&', eq='='] ) : 쿼리 객체를 쿼리 문자열로 변환해 리턴
+```
+var url = require('url');
+var querystring = require('querystring');
+
+var parsedObject = url.parse('https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js');
+console.log(querystring.parse(parsedObject.query));
+```
+```
+Command: node   "D:/node.js code/example/node.querystring.js" 
+{ where: 'nexearch',
+  sm: 'top_hty',
+  fbm: '1',
+  ie: 'utf8',
+  query: 'node.js' }
+Program exited with code 0
+```
+```
+var url = require('url');
+
+console.log(url.parse('https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js', true));
+```
+```
+Command: node   "D:/node.js code/example/node.querystring.js" 
+Url {
+  protocol: 'https:',
+  slashes: true,
+  auth: null,
+  host: 'search.naver.com',
+  port: null,
+  hostname: 'search.naver.com',
+  hash: null,
+  search: '?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js',
+  query: 
+   { where: 'nexearch',
+     sm: 'top_hty',
+     fbm: '1',
+     ie: 'utf8',
+     query: 'node.js' },
+  pathname: '/search.naver',
+  path: '/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js',
+  href: 'https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=node.js' }
+Program exited with code 0
+```
+
+## util 모듈
+```
+// url 모듈 추출
+var util = require('util');
+```
+### *메서드*
+- format( ... ) : 매개변수로 입력한 문자열을 조합해 리턴
+```
+var util = require('util');
+
+var data = util.format('%d + %d = %d', 52, 273, 52+273);
+console.log(data);
+```
+```
+Command: node   "D:/node.js code/example/node.util.js" 
+52 + 273 = 325
+Program exited with code 0
+```
+
+## crypto 모듈
+해시 생성과 암호화를 수행하는 모듈
+> NOTE_ 해시(Hash)
+> 1. 키와 값을 갖는 자료형
+> 2. 전자 지문
+
+```
+// crypto 모듈 추출
+var crypto = require('crypto');
+```
+### crypto 모듈을 사용한 해시 생성
+```
+// 모듈 생성
+var crypto = require('crypto');
+
+// 해시 생성
+var shasum = crypto.createHash('sha256');
+shasum.update('crypto_hash');
+var output = shasum.digest('hex');
+
+console.log('crypto_hash:', output);
+```
+```
+Command: node   "D:/node.js code/example/node.ctypto.js" 
+crypto_hash: 820f329baab52f75e1e3844b61b7bfcaa4035d881c6f1fbd42dc29b024638c05
+Program exited with code 0
+```
+해시 생성 방법
+[crypto.createHash(algorithm)](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_01.png)
+[hash.digest([encoding])](https://nodejs.org/api/crypto.html#crypto_hash_digest_encoding)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_02.png)
+[hash.update(data[, inputEncoding])](https://nodejs.org/api/crypto.html#crypto_hash_update_data_inputencoding)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_03.png)
+> NOTE_ 눈사태 효과(avalanche effect)
+> 원본 문자열이 조금이라도 다르면 해시 형태가 굉장히 많이 달라지는 현상
+
+해시는 다른 문자열이라도 같게 나올수 있다. 따라서 해시를 원래 값으로 돌리는 것은 완전히 불가능하다. 서버에 사용자의 비밀번호를 해시화해서 저장하고 로그인시 입력 비밀번호를 해시화 해서 비교한다.
+> NOTE_ 최근 해커들이 'A를 해시화하면 B가 나온다.'를 정리해 사용한다. 따라서 더 복잡한 해시화 방법을 사용하고 여러 번 해시화하거나 사용자에 따라 해시화 수행 횟수를 다르게하는 등의 방법을 사용한다.
+
+### crypto 모듈을 사용한 암호화
+```
+// 모듈 생성
+var crypto = require('crypto');
+
+// 변수 선언
+var key = '아무도 알지 못하는 나만의 비밀 키';
+var input = 'PASSWORD';
+
+// 암호화
+var cipher = crypto.createCipher('aes192', key);
+cipher.update(input, 'uft8', 'base64');
+var cipheredOutput = cipher.final('base64');
+
+// 암호화 해제
+var decipher = crypto.createDecipher('aes192', key);
+decipher.update(cipheredOutput, 'base64', 'utf8');
+var decipheredOutput = decipher.final('utf8');
+
+console.log('문자열:' + input);
+console.log('암호화:' + cipheredOutput);
+console.log('암호화 해제:' + decipheredOutput);
+```
+```
+Command: node   "D:/node.js code/example/node.ctypto.js" 
+문자열:PASSWORD
+암호화:JVFgMKBOz21IcJY7es33qQ==
+암호화 해제:PASSWORD
+Program exited with code 0
+```
+암호화 방법
+[crypto.createCipher(algorithm, key)](https://nodejs.org/api/crypto.html#crypto_crypto_createcipher_algorithm_password)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_04.png)
+[cipher.update(data[, inputEncoding][, outputEncoding])](https://nodejs.org/api/crypto.html#crypto_cipher_update_data_inputencoding_outputencoding)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_05.png)
+[cipher.final([outputEncoding])](https://nodejs.org/api/crypto.html#crypto_cipher_final_outputencoding)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_06.png)
+
+암호화 해제 방법
+[crypto.createDecipher(algorithm, key)](https://nodejs.org/api/crypto.html#crypto_crypto_createdecipher_algorithm_password)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_07.png)
+[decipher.update(data[, inputEncoding][, outputEncoding])](https://nodejs.org/api/crypto.html#crypto_decipher_update_data_inputencoding_outputencoding)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_08.png)
+[decipher.final([outputEncoding])](https://nodejs.org/api/crypto.html#crypto_decipher_final_outputencoding)
+![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_09.png)
