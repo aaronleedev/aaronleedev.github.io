@@ -8,7 +8,7 @@ tags:	node.js book study
 cover:  "/assets/node_js_book_01.png"
 ---
 
-## os 모듈
+# os 모듈
 ```
 // os 모듈 추출
 var os = require('os');
@@ -28,7 +28,7 @@ var os = require('os');
 
 ___
 
-## url 모듈
+# url 모듈
 ```
 // url 모듈 추출
 var os = require('url');
@@ -40,7 +40,7 @@ var os = require('url');
 
 ___
 
-## query string 모듈
+# query string 모듈
 ```
 // query stringg 모듈 추출
 var os = require('querystring');
@@ -96,7 +96,7 @@ Program exited with code 0
 
 ___
 
-## util 모듈
+# util 모듈
 ```
 // url 모듈 추출
 var util = require('util');
@@ -118,7 +118,7 @@ Program exited with code 0
 
 ___
 
-## crypto 모듈
+# crypto 모듈
 해시 생성과 암호화를 수행하는 모듈
 
 > NOTE_ 해시(Hash)
@@ -130,7 +130,7 @@ ___
 var crypto = require('crypto');
 ```
 
-### crypto 모듈을 사용한 해시 생성
+## crypto 모듈을 사용한 해시 생성
 ```
 // 모듈 생성
 var crypto = require('crypto');
@@ -148,7 +148,7 @@ crypto_hash: 820f329baab52f75e1e3844b61b7bfcaa4035d881c6f1fbd42dc29b024638c05
 Program exited with code 0
 ```
 
-#### *해시 생성 메서드*
+### *해시 생성 메서드*
 - [crypto.createHash(algorithm)](https://nodejs.org/api/crypto.html#crypto_crypto_createhash_algorithm)
 
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_01.png)
@@ -167,7 +167,7 @@ Program exited with code 0
 > NOTE_ 눈사태 효과(avalanche effect)
 > 원본 문자열이 조금이라도 다르면 해시 형태가 굉장히 많이 달라지는 현상
 
-### crypto 모듈을 사용한 암호화
+## crypto 모듈을 사용한 암호화
 ```
 // 모듈 생성
 var crypto = require('crypto');
@@ -198,7 +198,7 @@ Command: node   "D:/node.js code/example/node.ctypto.js"
 Program exited with code 0
 ```
 
-#### *암호화 메서드*
+### *암호화 메서드*
 - [crypto.createCipher(algorithm, key)](https://nodejs.org/api/crypto.html#crypto_crypto_createcipher_algorithm_password)
 
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_04.png)
@@ -212,7 +212,7 @@ Program exited with code 0
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_06.png)
 
 
-#### *암호화 해제 메서드*
+### *암호화 해제 메서드*
 - [crypto.createDecipher(algorithm, key)](https://nodejs.org/api/crypto.html#crypto_crypto_createdecipher_algorithm_password)
 
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_07.png)
