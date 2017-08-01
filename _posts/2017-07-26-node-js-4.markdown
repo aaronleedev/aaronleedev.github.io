@@ -226,3 +226,115 @@ Program exited with code 0
 ![_config.yml]({{ site.baseurl }}/images/2017-07-26-node-js-4_09.png)
 
 ___
+
+# file system 모듈
+파일 처리와 관련된 모듈
+```
+// file system 모듈 추출
+var fs = require('fs');
+```
+
+### *메서드*
+- readFile( file, encoding, callback ) : 파일 비동기적으로 읽기
+- readFileSync( file, encoding ) : 파일 동기적으로 읽기
+- writeFile( file, data, encoding, callback ) : 파일 비동기적으로 쓰기
+- writeFileSync( file, data, encoding ) : 파일 동기적으로 쓰기
+
+## 파일 읽기
+```
+// 모듈 생성
+var fs = require('fs');
+
+// 읽기 메서드 사용
+fs.readFile('textfile.txt', 'utf8', function(error, data) {
+    console.log('READ FILE ASYNC COMPLETE');
+    console.log(data);
+});
+
+var text = fs.readFileSync('textfile.txt', 'utf8');
+console.log('READ FILE SYNC COMPLETE');
+console.log(text);
+```
+```
+Command: node   "D:/node.js code/example/node.filesystem.js" 
+READ FILE SYNC COMPLETE
+This is textfile.txt
+REAR FILE ASYNC COMPLETE
+This is textfile.txt
+Program exited with code 0
+```
+
+## 파일 쓰기
+```
+// 모듈 생성
+var fs = require('fs');
+
+// 쓰시 메서드 사용
+var data = 'Hello World ... !';
+
+fs.writeFile('textfileWrite.txt', data, 'utf8', function (error) {
+   console.log('WRITE FILE ASYNC COMPLETE'); 
+});
+
+fs.writeFileSync('textfileWriteSync.txt', data, 'utf8');
+console.log('WRITE FILE SYNC COMPLETE');
+```
+```
+Command: node   "D:/node.js code/example/node.filesystem.js" 
+WRITE FILE SYNC COMPLETE
+WRITE FILE ASYNC COMPLETE
+Program exited with code 0
+```
+
+## 예외 처리
+```
+// 모듈 생성
+var fs = require('fs');
+
+// 동기식 파일 읽기/쓰기 예외처리
+try {
+    var text = fs.readFileSync('textfile.txt', 'utf8');
+    console.log('READ FILE SYNC COMPLETE');
+    console.log(text);
+} catch (e) {
+    console.log(e);
+}
+
+var data = 'Hello World ... !';
+try {
+    fs.writeFileSync('textfileWriteSync.txt', data, 'utf8');
+    console.log('WRITE FILE SYNC COMPLETE');
+} catch (e) {
+    console.log(e);
+}
+```
+```
+// 모듈 생성
+var fs = require('fs');
+
+// 비동기식 파일 읽기/쓰기 예외처리
+fs.readFile('textfile.txt', 'utf8', function(error, data) {
+    if(error) {
+        console.log(error);
+    } else {
+        console.log('READ FILE ASYNC COMPLETE');
+        console.log(data);
+    }
+});
+
+var data = 'Hello World ... !';
+fs.writeFile('textfileWrite.txt', data, 'utf8', function (error) {
+    if(error) {
+        console.log(error);
+    } else {
+        console.log('WRITE FILE ASYNC COMPLETE');    
+    }
+});
+```
+
+> NOTE_ BOOL 자료형 변환
+> Boolean(0) = false
+> Boolean(NaN) = false
+> Boolean('') = false
+> Boolean(null) = false
+> Boolean(undefined) = false
