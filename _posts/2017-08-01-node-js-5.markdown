@@ -86,7 +86,7 @@ Command: node   "D:/node.js code/example/event.trigger.js"
 Program exited with code 0
 ```
 
-> NOTE_ 프로그램 강제 종료 메서드
+> NOTE_ 프로그램 강제 종료 메서드 
 > [process.exit([code])](https://nodejs.org/api/process.html#process_process_exit_code)
 
 # 이벤트 생성
