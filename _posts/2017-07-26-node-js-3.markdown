@@ -39,6 +39,10 @@ cover:  "/assets/node_js_book_01.png"
 exports.abs = function (number) { ... };
 ``` 
 ```
+*************
+* main.js *
+*************
+
 // 모듈 추출
 var module = require('./module.js');
 // 모듈 사용
