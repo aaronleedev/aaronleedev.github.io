@@ -76,8 +76,8 @@ setInterval(function () {
 }, 10000);
 ```
 
-> NOTE_ createServer() 메서드의 매개변수 
-> [http.createServer([requestListener])](https://nodejs.org/api/http.html#http_http_createserver_requestlistener)
+> NOTE_ createServer() 메서드의 매개변수
+> - [http.createServer([requestListener])](https://nodejs.org/api/http.html#http_http_createserver_requestlistener)
 > ```
 > var server = require('http').createServer(function (request, response) {
 >     response.writeHead(200, { 'Content-Type': 'text/html' });
