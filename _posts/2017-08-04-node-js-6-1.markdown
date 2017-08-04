@@ -1,0 +1,150 @@
+---
+layout: post
+title:  node.js http 모듈 - response 객체
+date:   2017-08-04 15:30:00
+author: Aaron Lee
+categories: node_js
+tags:	node.js book study
+cover:  "/assets/node_js_book_01.png"
+---
+
+# response 객체
+클라이언트에 제공하는 응답 메세지를 작성할 때 response 객체를 사용한다.
+### *response 객체 메서드*
+- writeHead( statusCode, object ) : 응답 헤더 작성
+- end( [data, encoding] ) : 응답 본문 작성
+
+```
+require('http').createServer(function (request, response) {
+    response.writeHead(200, { 'Content-Type': 'text/html' });
+    response.end('<h1>Hello World ... !</h1>');
+}).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+## File System 모듈을 사용한 HTML 페이지 제공
+```
+var fs = require('fs');
+var http = require('http');
+
+http.createServer(function (request, response) {
+    // HTML 파일 일기
+    fs.readFile('HTMLPage.html', function (error, data) {
+        response.writeHead(200, { 'Content-Type': 'text/html' });
+        response.end(data);
+    });
+}).listen(52273, function () {
+   console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+```
+<!-- HTMLPage.html -->
+<!D0CTYPE html>
+<html>
+<head>
+    <title>Index</title>
+</head>
+<body>
+    <h1>Hello Node.js</h1>
+    <h2>Aaron Lee</h2>
+    <hr />
+    <p>qwertyuoiasdsa.</p>
+</body>
+</html>
+```
+
+## 이미지와 음악 파일 제공
+```
+var fs = require('fs');
+var http = require('http');
+
+http.createServer(function (request, response) {
+    // 이미지 파일 제공
+    fs.readFile('test.jpg', function(error, data) {
+        response.writeHead(200, { 'Content-Type': 'image/jpeg' });
+        response.end(data);
+    });
+}).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+
+http.createServer(function (request, response) {
+    // 동영상 파일 제공
+    fs.readFile('test.mp3', function (erroe, data) {
+        response.writeHead(200, { 'Content-Type': 'audio/mp3' });
+        response.end(data);
+    })
+}).listen(52274, function () {
+    console.log('Server Running at http://127.0.0.1:52274');
+});
+```
+
+### *[Content-Type 속성](https://www.google.co.kr/search?q=MIME+TYPE+%EB%AA%A9%EB%A1%9D&oq=MIME+TYPE+%EB%AA%A9%EB%A1%9D&gs_l=psy-ab.3..0i30k1.4048.6857.0.7371.13.10.1.0.0.0.714.1892.3-2j1j0j1.4.0....0...1.1j4.64.psy-ab..9.4.1178...0j0i13i30k1.9xgDUDuZvYw) (MIME 형식의 예)*
+- text/plain : 기본적인 텍스트
+- text/html : HTML 문서
+- text/css : CSS 문서
+- text/xml : XML 문서
+- image/jpeg : JPG/JPEG 그림 파일
+- image/png : PNG 그림 파일
+- video/mpeg : MPEG 비디오 파일
+- audio/mp3 : MP3 음악 파일
+
+## 쿠키 생성
+쿠키는 키와 값으로 이루어지며 이름, 값, 파기 날짜, 경로 정보를 가지고 있다. 서버와 클라이언트에서 모두 저장하고 사용하 수 있다. 일정 기간 동안 저장할 수 있다.
+response 객체를 사용하면 클라이언트에 쿠키를 할당할 수 있다. 쿠키를 할달할 때는 응답 헤더의 *Set-Cookie* 속성을 사용한다. 다음과 같은 문자열로 쿠키를 설정한다.
+> Name = Value; Expires = 날짜; Domain = 도메인; Path = 경로; Secure
+
+```
+var http = require('http');
+
+http.createServer(function (request, response) {
+    var date = new Date();
+    date.setDate(date.getDate() + 7);
+    
+    // 쿠키 할당
+    response.writeHead(200, { 
+        'Content-type': 'text/html',
+        'Set-Cookie': [
+            'breakfast = toast; Expires = ' + date.toUTCString(),
+            'dinner = chicken'
+        ]
+    });
+    response.end('<h1>' + request.headers.cookie + '</h1>');
+}).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+## 페이지 강제 이동
+페이지 강제 이동할 때는 응답 헤더의 Location 속성을 사용한다.
+```
+var http = require('http');
+
+http.createServer(function (request, response) {
+    // Location 속성을 사용하여 페이지 강제 이동
+    response.writeHead(302, { 'Location': 'http://www.naver.com' });
+    response.end();
+}).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+writeHead() 메서드의 첫번째 매개변수는 *Status Code* 값이다.
+### *[HTTP Status Code](https://www.google.co.kr/search?q=HTTP+Status+Code&oq=HTTP+Status+Code&aqs=chrome..69i57j0l5.981j0j8&sourceid=chrome&ie=UTF-8) 예*
+- 1XX : 처리중 [100 Continue]
+- 2XX : 성공 [200 OK]
+- 3XX : 리다이렉트 [300 Multiple Choices]
+- 4XX : 클라이언트 오류 [400 Bad Request]
+- 5XX : 서버 오류 [500 Internal Server Error]
+
+```
+var http = require('http');
+
+http.createServer(function (request, response) {
+    // 404 페이지 띄우
+    response.writeHead(404);
+    response.end();
+}).listen(52277, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
