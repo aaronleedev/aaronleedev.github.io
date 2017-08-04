@@ -51,7 +51,7 @@ descriptions:
   - cat: jekyll
     desc: "jekyll 관련 글"
 
-  - cat: node_js
+  - cat: node.js
     desc: "node.js 계발 관련 글"
 
 # Social icons and sharing options

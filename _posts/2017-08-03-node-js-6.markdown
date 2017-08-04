@@ -3,7 +3,7 @@ layout: post
 title:  [node.js] http 모듈 - server 객체
 date:   2017-08-03 19:32:00
 author: Aaron Lee
-categories: node_js
+categories: node.js
 tags:	node.js book study
 cover:  "/assets/node_js_book_01.png"
 ---
