@@ -1,0 +1,99 @@
+---
+layout: post
+title:  node.js 외부 모듈 - 서버 실행 모듈
+date:   2017-08-07 01:10:00
+author: Aaron Lee
+categories: node.js
+tags:	node.js book study
+cover:  "/assets/node_js_book_01.png"
+---
+
+전역 모듈은 터미널에서 곧바로 사용할 수 있는 모듈이다. 전역 모듈을 설치할 때는 g 옵션을 사용한다.
+```
+$ npm install -g supervisor
+$ npm install -g forever
+$ npm install -g express@3.4.7
+```
+
+# supervisor 모듈
+supervisor 모듈은 js 파일의 변경을 자동으로 인식하고 종료 후에 실행해 준다. [supervisor 모듈의 공식 홈페이지](https://github.com/isaacs/node-supervisor)
+
+### *supervisor 모듈 설치*
+```
+> npm install -g supervisor
+```
+
+```
+$ sudo npm install -g supervisor
+```
+
+> NODE_ supervisor 기본 명령어 확인  
+> ```
+> > supervisor
+> ```
+
+```
+******************
+* test-server.js *
+******************
+
+var http = require('http');
+
+http.createServer(function (request, response) {
+    response.writeHead(200, { 'Content-Type': 'text/html' });
+    response.end('<h1>Test - File - 2<h1> Test1');
+}).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+### *supervisor 모듈 서버 실행 명령어*
+```
+> supervisor test-server.js
+```
+
+js 파일을 수정 후 저장하면 supervisor 모듈이 알아서 서버를 종료 후에 재실행해 준다.
+
+# forever 모듈
+Node.js 는 단일 스레드 기반의 웹 서비스이므로 예외 발생 하나로 웹 서비스가 죽는다. 이러한 예외 상황을 대비하고자 만들어진 모듈이 forever 모듈이다. [forever 모듈의 공식 홈페이지](https://github.com/nodejitsu/forever)
+
+### *forever 모듈 설치*
+```
+> npm install -g forever
+```
+
+```
+$ sudo npm install -g forever
+```
+
+> NODE_ supervisor 기본 명령어 확인  
+> ```
+> > forever
+> ```
+
+```
+******************
+* test-server.js *
+******************
+
+var http = require('http');
+
+http.createServer(function (request, response) {
+    if(request.url == '/') {
+        response.writeHead(200, { 'Content-Type': 'text/html' });
+        response.end('<h1>Test - File - 2<h1> Test1');    
+    } else {
+        // 오류 발생
+        error.error.error();
+    }
+}).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+### *supervisor 모듈 명령어*
+```
+> forever start test-server.js // 서버 실행
+> forever list // 서버 실행 목록
+> forever stop 서버번호 // 서버 중지
+```
