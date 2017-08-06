@@ -1,6 +1,6 @@
 ---
 layout: post
-title: &#91;node.js&#93; 전역 객체
+title: node.js 전역 객체
 date:   2017-07-26 09:21:00
 author: Aaron Lee
 categories: node.js

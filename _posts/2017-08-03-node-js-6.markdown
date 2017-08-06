@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  &#91;node.js&#93; http 모듈 - server 객체
+title:  node.js http 모듈 - server 객체
 date:   2017-08-03 19:32:00
 author: Aaron Lee
 categories: node.js
