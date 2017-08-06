@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  node.js 외부 모듈
+title:  &#91;node.js&#93; 외부 모듈
 date:   2017-08-06 14:25:00
 author: Aaron Lee
 categories: node.js
@@ -14,7 +14,8 @@ Node.js 는 npm^Node Package Manager^을 기반으로 모듈을 공유한다.
 $ npm install 모듈명
 ```
 
-> NOTE_ ejs 모듈, jade 모듈 (웹 관련 모듈) 설치
+> NOTE_  
+> ejs 모듈, jade 모듈 (웹 관련 모듈) 설치  
 > ```
 > $ npm install ejs
 > $ npm install jade
