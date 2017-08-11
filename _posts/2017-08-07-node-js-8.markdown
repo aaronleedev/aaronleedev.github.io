@@ -15,6 +15,8 @@ express 모듈은 http 모듈에 여러 기능을 추가해 쉽게 사용할 수
 $ npm install express
 ```
 
+---
+
 # 기본 서버
 express 모듈로 서버를 생성 및 실행 방법은 아래와 같다.
 ```
@@ -92,6 +94,8 @@ http.createServer(app).listen(52273, function () {
     console.log('Server Running at http://127.0.0.1:52273');
 });
 ```
+
+---
 
 # 기본 요청 메서드 (Request)
 ### *request 객체 메서드*
@@ -183,4 +187,90 @@ http.createServer(app).listen(52273, function () {
 
 ![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-01.png)
 
+---
+
 # 미들웨어 개요
+use() 메서드는 여러 번 사용할 수 있다. 이때 use() 메서드의 3번재 매개변수에 다음에 호출할 함수를 입력한다.
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+
+app.use(function (request, response, next) {
+    console.log('첫번째 미들웨어');
+    next();
+});
+
+app.use(function (request, response, next) {
+    console.log('두번째 미들웨어');
+    next();
+});
+
+app.use(function (request, response, next) {
+    console.log('세번째 미들웨어');
+    
+    response.send('<h1>Express Basic</h1>');
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+```
+Command: node   "D:/node.js code/example/8/8-4.js" 
+Server Running at http://127.0.0.1:52273
+첫번째 미들웨어
+두번째 미들웨어
+세번째 미들웨어
+```
+
+![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-02.png)
+
+use() 메서드의 매개변수에 입력하는 함수를 미들웨어^middleware^라고 부른다.
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+
+app.use(function (request, response, next) {
+    request.number = 52;
+    response.number = 273;
+    next();
+});
+
+app.use(function (request, response, next) {
+    response.send('<h1>' + request.number + ' : ' + response.number + '</h1>');
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-03.png)
+
+미들웨어를 사용하면 특정한 일을 수행하는 모듈을 분리해서 만들 수 있다. express 모듈에서는 다양한 미들웨어를 제공한다.
+
+### *express 모듀에서 제공하는 미들웨어*
+- logger : 로그 정보 출력
+- csrf : CSRF 보안 수행
+- basicAuth : 기본적인 인증 수행
+- bodyParser : POST 요청 매개변수 추출
+- cookieParser : 쿠키 분해
+- session : 세션 처리 수행
+- methodOverride : 다양한 요청 방식을 수행할 수 있게한다
+- responseTime 응답 시간 계산
+- router : 페이지 라우트 수행
+- staticCache : static 미들웨어를 위한 메모리 캐시 층을 생성
+- static : 특정 폴더를 서버의 루트 폴더에 올린다
+- directory : 서버의 디렉토리 구조를 보여준다
+- vhost : 가상 호스트 설정
+- favicon : 파비콘 생성
+- limit : POST 요청의 데이터를 제한
+- errorHandler : 예외 처리 수행  
+
+---
+
+# logger 미들웨어
