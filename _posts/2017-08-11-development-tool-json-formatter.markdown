@@ -3,7 +3,7 @@ layout: post
 title:  JSON Formatter
 date:   2017-08-11 15:24:00
 author: Aaron Lee
-categories: development tool
+categories: developmentTool
 tags:	developmentTool web chrome json
 cover:  "/images/2017-08-11-development-tool-json-formatter_01.png"
 ---

@@ -54,7 +54,7 @@ descriptions:
   - cat: node.js
     desc: "node.js 관련 post"
     
-  - cat: development tool
+  - cat: developmentTool
     desc: "development tool 관련 post"
 
 # Social icons and sharing options
