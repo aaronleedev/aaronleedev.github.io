@@ -10,7 +10,7 @@ cover:  "/assets/node_js_book_01.png"
 
 express 모듈은 http 모듈에 여러 기능을 추가해 쉽게 사용할 수 있게 만든 모듈이다.
 
-### *express 모듈 설치*
+## express 모듈 설치
 ```
 $ npm install express
 ```
@@ -36,4 +36,151 @@ http.createServer(app).listen(52273, function () {
 });
 ```
 
-# 기본 응답 메서드
+# 기본 응답 메서드 (Response)
+### *response 객체 메서드*
+- response.send( ) : 매개변수의 자료형에 따라 적절한 형태로 응답
+- response.json( ) : JSON 형태로 응답
+- response.jsonp( ) : JSONP 형태로 응답
+- response.redirect( ) : 웹 페이지 경로를 강제로 이동
+
+## response.send( )
+### *send( ) 메서드 매개변수*
+- 문자열 : HTML
+- 배열 : JSON
+- 객체 : JSON
+
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+
+app.use(function (request, response) {
+    var output = [];
+    for(var i = 0; i < 3; i++) {
+        output.push({
+            count: i,
+            name: 'name - ' + i
+        });
+    }
+    
+    // 매개변수로 배열을 전달
+    response.send(output);
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+> NOTE_ [JSON Formatter](https://aaronleedev.github.io/development/tool/2017/08/11/development-tool-json-formatter.html)  
+> 크롬에서 JSON 형식과 JSONP 형식을 보기 쉽게 보여주는 크롬 확장 프로그램
+
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+
+app.use(function (request, response) {
+    // 첫번째 매개변수로 Status Code, 두번째 매개변수로 HTML 응답 데이터 전달
+    response.send(404, '<h1>ERROR</h1>');
+    
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+# 기본 요청 메서드 (Request)
+### *request 객체 메서드*
+- header( ) : 요청 헤더의 속성을 지정 또는 추출
+- accepts( ) : 요청 헤더의 Accept 속성을 확인
+- param( ) : 요청 매개변수를 추출
+- is( ) : 요청 헤더의 Content-Type 속성을 확인
+
+## 요청 헤더의 속성 추출
+header() 메서드를 사용하여 요청 헤더의 속성을 추출할 수 있다.
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+
+app.use(function (request, response) {
+    // User-Agent 속성 추출
+    var agent = request.header('User-Agent');
+    
+    console.log(request.headers);
+    console.log(agent);
+    
+    response.send(200);
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+```
+Command: node   "D:/node.js code/example/8/8-3.js" 
+Server Running at http://127.0.0.1:52273
+{ host: '127.0.0.1:52273',
+  connection: 'keep-alive',
+  'cache-control': 'max-age=0',
+  'upgrade-insecure-requests': '1',
+  'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36',
+  accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'accept-encoding': 'gzip, deflate, br',
+  'accept-language': 'ko-KR,ko;q=0.8,en-US;q=0.6,en;q=0.4,ja;q=0.2' }
+Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36
+```
+
+### User-Agent 속성을 이용 브라우저 구분 
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+
+app.use(function (request, response) {
+    // User-Agent 속성 추출
+    var agent = request.header('User-Agent');
+    
+    // 브라우저를 구분
+    if(agent.toLowerCase().match(/chrome/)) {
+        response.send('<h1>Hello Chrome ... !</h1>');
+    } else {
+        response.send('<h1>Hello Express ... !</h1>');
+    }
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+## 요청 매개변수 추출
+param() 메서드를 이용하여 요청 매개변수를 추출할 수 있다.
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+
+app.use(function (request, response) {
+    // 요청 매개변수 추출
+    var name = request.param('name');
+    var region = request.param('region');
+    
+    response.send('<h1>' + name + ' - ' + region + '</h1>');
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-01.png)
+
+# 미들웨어 개요
