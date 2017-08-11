@@ -49,10 +49,13 @@ jekyll-archives:
 # Category descriptions (for archive pages)
 descriptions:
   - cat: jekyll
-    desc: "jekyll 관련 글"
+    desc: "jekyll 관련 post"
 
   - cat: node.js
-    desc: "node.js 계발 관련 글"
+    desc: "node.js 관련 post"
+    
+  - cat: development tool
+    desc: "development tool 관련 post"
 
 # Social icons and sharing options
 #

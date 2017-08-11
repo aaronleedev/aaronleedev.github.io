@@ -10,9 +10,9 @@ cover:  "/assets/node_js_book_01.png"
 
 전역 모듈은 터미널에서 곧바로 사용할 수 있는 모듈이다. 전역 모듈을 설치할 때는 g 옵션을 사용한다.
 ```
-$ npm install -g supervisor
-$ npm install -g forever
-$ npm install -g express@3.4.7
+> npm install -g supervisor
+> npm install -g forever
+> npm install -g express@3.4.7
 ```
 
 # supervisor 모듈
@@ -66,7 +66,7 @@ Node.js 는 단일 스레드 기반의 웹 서비스이므로 예외 발생 하�
 $ sudo npm install -g forever
 ```
 
-> NODE_ supervisor 기본 명령어 확인  
+> NODE_ forever 기본 명령어 확인  
 > ```
 > > forever
 > ```
@@ -91,7 +91,7 @@ http.createServer(function (request, response) {
 });
 ```
 
-### *supervisor 모듈 명령어*
+### *forever 모듈 명령어*
 ```
 > forever start test-server.js // 서버 실행
 > forever list // 서버 실행 목록
