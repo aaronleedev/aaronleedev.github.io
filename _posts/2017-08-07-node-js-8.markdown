@@ -255,7 +255,7 @@ http.createServer(app).listen(52273, function () {
 
 미들웨어를 사용하면 특정한 일을 수행하는 모듈을 분리해서 만들 수 있다. express 모듈에서는 다양한 미들웨어를 제공한다.
 
-### *express 모듀에서 제공하는 미들웨어*
+### *express 모듈에서 제공하는 미들웨어*
 - logger : 로그 정보 출력
 - csrf : CSRF 보안 수행
 - basicAuth : 기본적인 인증 수행
@@ -273,6 +273,344 @@ http.createServer(app).listen(52273, function () {
 - limit : POST 요청의 데이터를 제한
 - errorHandler : 예외 처리 수행  
 
+> NOTE_ express 4.x 버전 이후 기본 제공 미들웨어 모두 제거  
+> express 4.x 버전으로 업그레이드 되면서 기존 기본으로 제공되던 미들웨어가 모두 제거 되었다. 기존 미들웨어를 사용하기 위해서는 개발자가 직접 설치 후 추출해 사용해야 한다. 미들웨어 목록은 [express 홈페이지](http://expressjs.com/ko/guide/migrating-4.html)에서 확인 가능하다.
+
 ---
 
-# logger 미들웨어
+# logger 미들웨어 (-> morgan 미들웨어)
+logger 미들웨어는 웹 요청이 들어왔을 때 로그를 출력하는 미들웨어이다. express 4.x 버전 이후 [morgan 미들웨어](https://github.com/expressjs/morgan)로 변경 되었으며, 직접 설치해 사용 해야한다. 
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+// morgan 미들웨어 추출
+var morgan = require('morgan');
+
+// morgan 미들웨어 설정
+app.use(morgan());
+app.use(function (request, response) {
+    response.send('<h1>Express Basic</h1>');
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+```
+Command: node   "D:/node.js code/example/8/8-5.js" 
+Server Running at http://127.0.0.1:52273
+::ffff:127.0.0.1 - - [Sat, 12 Aug 2017 04:08:37 GMT] "GET / HTTP/1.1" 200 22 "-" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"
+::ffff:127.0.0.1 - - [Sat, 12 Aug 2017 04:08:37 GMT] "GET /favicon.ico HTTP/1.1" 200 22 "http://127.0.0.1:52273/" "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"
+```
+
+morgan() 메서드의 매개변수에 문자열을 입력해 출력 로그를 원하는 형태로 지장할 수 있다. 매개변수로 입력할 수 있는 문자열 토큰은 아래와 같다.
+### *morgan 미들웨어 토큰*
+- :req[header] : 요청 헤더 출력
+- :res[header] : 응답 헤더 출력
+- :http-version : HTTP 버전 출력
+- :response-time : 응답 시간 출력
+- :remote-addr : 원격 주소 출력
+- :date : 요청 시간 출력
+- :method : 요청 방식 출력
+- :url : 요청 URL 출력
+- :referrer : 이전 URL 출력
+- :user-agent : 사용자 에이전트 출력
+- :status : 상태 코드 출력
+
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+var morgan = require('morgan');
+
+app.use(morgan(':method + :date'));
+app.use(function (request, response) {
+    response.send('<h1>Express Basic</h1>');
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+```
+Command: node   "D:/node.js code/example/8/8-5.js" 
+Server Running at http://127.0.0.1:52273
+GET + Sat, 12 Aug 2017 04:21:27 GMT
+GET + Sat, 12 Aug 2017 04:21:27 GMT
+```
+
+직접 토큰을 입력할 수 있지만 기본 형식을 사용할 수도 있다.
+### *morgan 미들웨어 기본 형식*
+- combined : :remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"
+- short : :remote-addr :remote-user :method :url HTTP/:http-version :status :res[content-length] - :response-time ms
+- tiny : :method :url :status :res[content-length] - :response-time ms
+
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+var morgan = require('morgan');
+
+app.use(morgan('short'));
+app.use(function (request, response) {
+    response.send('<h1>Express Basic</h1>');
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+```
+Command: node   "D:/node.js code/example/8/8-5.js" 
+Server Running at http://127.0.0.1:52273
+::ffff:127.0.0.1 - GET / HTTP/1.1 304 - - 5.000 ms
+::ffff:127.0.0.1 - GET /favicon.ico HTTP/1.1 304 - - 0.565 ms
+```
+
+> NOTE_ 더 많은 morgan 미들웨어 기본 형식 [morgan 홈페이지](https://github.com/expressjs/morgan#predefined-formats)에서 확인 가능하다.
+
+---
+
+# static 미들웨어 (-> serve-static 미들웨어)
+static 미들웨어는 웹 서버에서 손쉽게 파일을 제공하는 방법을 제공한다. express 4.x 버전 이후 [serve-static 미들웨어](https://github.com/expressjs/serve-static)로 변경 되었으며, 직접 설치해 사용 해야한다.
+
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+var morgan = require('morgan');
+// serve-static 미들웨어 추출
+var serveStatic = require('serve-static');
+
+app.use(morgan());
+// 전역 변수 __dirname을 사용하여 폴더 위치 지정
+app.use(serveStatic(__dirname + '/public'));
+app.use(function (request, response) {
+    response.send('<img src="/test.jpg" width="100%" />');
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+---
+
+# router 미들웨어
+router 미들웨어는 페이지 라우팅(Page Routing)을 구현하는 미들웨어이다. 페이지 라우팅은 클라이언트 요청에 적절한 페이지를 제공하는 기술이다. express 4.x 버전 이후 app.route() 메소드와 모듈식 마운팅 가능한 express.Router 클래스가 추가 되었다.
+
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+var morgan = require('morgan');
+var serveStatic = require('serve-static');
+
+app.use(morgan());
+app.use(serveStatic(__dirname + '/public'));
+
+// app.route() 메소드 사용하여 페이지 라우팅 방법
+app.route('/test/a').get(function (request, response) {
+    response.send('<a href="/test/b">Go to B</a>'); 
+});
+
+// express.Router 클래스 사용하여 모듈식 마운팅 가능한 페이지 라우팅 방법
+var router = require('./customize.router');
+app.use('/test', router);
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+```
+***********************
+* customize.router.js *
+***********************
+
+// express.Router 클래스 사용하여 모듈식 마운팅 가능한 페이지 라우팅 방법
+var express = require('express');
+var router = express.Router();
+
+router.use(function timeLog(request, response, next) {
+    console.log('Time: ', Date.now());
+    next();
+});
+router.get('/b', function (request, response) {
+    response.send('<a href="/test/a">Go to A</a>');
+});
+
+module.exports = router;
+```
+
+> NOTE_ URL 경로 지정할 때 대소문자를 무시하는 것이 기본 설정이다.
+
+### *router 객체 메서드*
+- get( path, callback ) : GET 요청 발생시, 이벤트 리스너 지정
+- post( path, callback ) : POST 요청 발생시, 이벤트 리스너 지정
+- put( path, callback ) : PUT 요청 발생시, 이벤트 리스너 지정
+- dell( path, callback ) : DELETE 요청 발생시, 이벤트 리스너 지정
+- all( path, callback ) : 모든 요청이 발생시, 이벤트 리스너 지정
+
+페이지 라우팅 할 때 토큰을 사용할 수 있다.
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+var morgan = require('morgan');
+var serveStatic = require('serve-static');
+
+app.use(morgan());
+app.use(serveStatic(__dirname + '/public'));
+
+app.route('/page/:id').get(function (request, response) {
+    var number = request.param('id');
+    response.send('<h1>' + number + ' Page</h1>'); 
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-04.png)
+
+> NOTE_ 전체 선택자  
+> express 모듈의 router 객체는 점체 선택자를 사용할 수 있다. 라우트 메서드를 사용한 순서대로 요청을 확인하므로 전체 선택자를 사용하는 라우트는 반드시 마지막에 위치해야 한다.
+> ```
+> ...
+> ...
+> var router = require('./customize.router');
+> app.use('/test', router);
+> 
+> app.route('/page/:id').get(function (request, response) {
+>     var number = request.param('id');
+>     response.send('<h1>' + number + ' Page</h1>'); 
+> });
+> 
+> app.route('*').all(function (request, response) {
+>     response.send(404, 'ERROR - Page Not Found');
+> });
+> 
+> http.createServer(app).listen(52273, function () {
+>     console.log('Server Running at http://127.0.0.1:52273');
+> });
+> ```
+
+---
+
+# cookie parser 미들웨어
+cookie parser 미들웨어는 요청 쿠키를 추출하는 미들웨어이다. cookie parser 미들웨어를 사용하면 request 객체에 cookies 속성이 추가된다. express 4.x 버전 이후 [cookie-parser 미들웨어](https://github.com/expressjs/cookie-parser)을 직접 설치해 사용 해야한다.
+```
+var http = require('http');
+var express = require('express');
+
+var app = express();
+var morgan = require('morgan');
+var serveStatic = require('serve-static');
+// cookie-parser 미들웨어 추출
+var cookieParser = require('cookie-parser');
+
+app.use(morgan());
+app.use(serveStatic(__dirname + '/public'));
+// cookie-parser 미들웨어 설정
+app.use(cookieParser());
+
+app.route('/getCookie').get(function (request, response) {
+    // cookie 출력
+    response.send(request.cookies); 
+});
+app.route('/setCookie').get(function (request, response) {
+    // cookie 생성
+    response.cookie('string', 'cookie');
+    response.cookie('json', {
+        name: 'cookie',
+        property: 'delicious'
+    });
+    
+    response.redirect('/getCookie'); 
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-04.png)
+
+cookie() 메서드 세번째 매개변수에는 아래와 같이 옵션 객체를 입력할 수 있다.
+```
+response.cookie('string', 'cookie', {
+    maxAge: 6000,
+    secure: true
+});
+```
+
+### *[cookie() 메서드 옵션 속성](https://github.com/expressjs/cookie-session#cookie-options)*
+- httpOnly : 클라이언트의 쿠키 접근 권한 지정
+- secure : secure 속성 지정
+- expires : expires 속성 지정
+- maxAge : 상대적으로 expires 속성 지정
+- path : path 속성 지정
+
+---
+
+# body parser 미들웨어 (-> body-parser 미들웨어, Multer 미들웨어)
+body parser 미들웨어는 POST 요청 데이터를 추출하는 미들웨어이다. body parser 미들웨어를 사용하면 request 객체에 body 속성이 추가된다. express 4.x 버전 이후 [body-parser 미들웨어](https://github.com/expressjs/body-parser)와 [Multer 미들웨어](https://github.com/expressjs/multer)로 변경 되었으며, 직접 설치해 사용 해야한다.
+
+## body-parser 미들웨어
+```
+var http = require('http');
+var express = require('express');
+var fs = require('fs');
+
+var app = express();
+
+var cookieParser = require('cookie-parser');
+// body-parser 미들웨어 추출
+var bodyParser = require('body-parser')
+
+app.use(cookieParser());
+// body-parser 미들웨어 설정
+app.use(bodyParser());
+
+app.route('/').get(function (request, response) {
+    if(request.cookies.auth) {
+        response.send('<h1>Login Success</h1>')
+    } else {
+        response.redirect('/login');
+    }
+});
+app.route('/login').get(function (request, response) {
+    fs.readFile('login.html', function (error, data) {
+        response.send(data.toString());
+    });
+});
+app.route('/login').post(function (request, response) {
+    var login = request.param('login');
+    var password = request.param('password');
+    
+    console.log(login, password);
+    console.log(request.body);
+    
+    // 로그인 정보 확인
+    if(request.body.login == 'aaron' && request.body.password == '1234') {
+        // 쿠키 생성
+        response.cookie('auth', true);
+        response.redirect('/');
+    } else {
+        response.redirect('/login');
+    }
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
