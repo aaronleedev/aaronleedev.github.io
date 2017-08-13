@@ -409,20 +409,20 @@ var http = require('http');
 var express = require('express');
 
 var app = express();
-var morgan = require('morgan');
-var serveStatic = require('serve-static');
 
-app.use(morgan());
-app.use(serveStatic(__dirname + '/public'));
+// 기본 라우팅 방법
+//app.get('/a', function (request, response) {
+//    response.send('<a href="/b">Go to B</a>'); 
+//});
 
 // app.route() 메소드 사용하여 페이지 라우팅 방법
-app.route('/test/a').get(function (request, response) {
-    response.send('<a href="/test/b">Go to B</a>'); 
+app.route('/a').get(function (request, response) {
+    response.send('<a href="/b">Go to B</a>'); 
 });
 
 // express.Router 클래스 사용하여 모듈식 마운팅 가능한 페이지 라우팅 방법
 var router = require('./customize.router');
-app.use('/test', router);
+app.use('', router);
 
 http.createServer(app).listen(52273, function () {
     console.log('Server Running at http://127.0.0.1:52273');
@@ -442,7 +442,7 @@ router.use(function timeLog(request, response, next) {
     next();
 });
 router.get('/b', function (request, response) {
-    response.send('<a href="/test/a">Go to A</a>');
+    response.send('<a href="/a">Go to A</a>');
 });
 
 module.exports = router;
@@ -463,13 +463,8 @@ var http = require('http');
 var express = require('express');
 
 var app = express();
-var morgan = require('morgan');
-var serveStatic = require('serve-static');
 
-app.use(morgan());
-app.use(serveStatic(__dirname + '/public'));
-
-app.route('/page/:id').get(function (request, response) {
+app.get('/page/:id', function (request, response) {
     var number = request.param('id');
     response.send('<h1>' + number + ' Page</h1>'); 
 });
@@ -482,19 +477,19 @@ http.createServer(app).listen(52273, function () {
 ![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-04.png)
 
 > NOTE_ 전체 선택자  
-> express 모듈의 router 객체는 점체 선택자를 사용할 수 있다. 라우트 메서드를 사용한 순서대로 요청을 확인하므로 전체 선택자를 사용하는 라우트는 반드시 마지막에 위치해야 한다.
+> express 모듈의 router 미들웨어는 점체 선택자를 사용할 수 있다. 라우트 메서드를 사용한 순서대로 요청을 확인하므로 전체 선택자를 사용하는 라우트는 반드시 마지막에 위치해야 한다.
 > ```
 > ...
 > ...
 > var router = require('./customize.router');
-> app.use('/test', router);
+> app.use('/', router);
 > 
-> app.route('/page/:id').get(function (request, response) {
+> app.get('/page/:id', function (request, response) {
 >     var number = request.param('id');
 >     response.send('<h1>' + number + ' Page</h1>'); 
 > });
 > 
-> app.route('*').all(function (request, response) {
+> app.all('*', function (request, response) {
 >     response.send(404, 'ERROR - Page Not Found');
 > });
 > 
@@ -522,11 +517,11 @@ app.use(serveStatic(__dirname + '/public'));
 // cookie-parser 미들웨어 설정
 app.use(cookieParser());
 
-app.route('/getCookie').get(function (request, response) {
+app.get('/getCookie', function (request, response) {
     // cookie 출력
     response.send(request.cookies); 
 });
-app.route('/setCookie').get(function (request, response) {
+app.get('/setCookie', function (request, response) {
     // cookie 생성
     response.cookie('string', 'cookie');
     response.cookie('json', {
@@ -565,6 +560,7 @@ response.cookie('string', 'cookie', {
 body parser 미들웨어는 POST 요청 데이터를 추출하는 미들웨어이다. body parser 미들웨어를 사용하면 request 객체에 body 속성이 추가된다. express 4.x 버전 이후 [body-parser 미들웨어](https://github.com/expressjs/body-parser)와 [Multer 미들웨어](https://github.com/expressjs/multer)로 변경 되었으며, 직접 설치해 사용 해야한다.
 
 ## body-parser 미들웨어
+텍스트 형태의 POST 요청 데이터를 추출할 때 사용한다.
 ```
 var http = require('http');
 var express = require('express');
@@ -580,19 +576,20 @@ app.use(cookieParser());
 // body-parser 미들웨어 설정
 app.use(bodyParser());
 
-app.route('/').get(function (request, response) {
+app.get('/', function (request, response) {
     if(request.cookies.auth) {
         response.send('<h1>Login Success</h1>')
     } else {
         response.redirect('/login');
     }
 });
-app.route('/login').get(function (request, response) {
+app.get('/login', function (request, response) {
     fs.readFile('login.html', function (error, data) {
         response.send(data.toString());
     });
 });
-app.route('/login').post(function (request, response) {
+app.post('/login', function (request, response) {
+    // 쿠키 생성
     var login = request.param('login');
     var password = request.param('password');
     
@@ -601,7 +598,6 @@ app.route('/login').post(function (request, response) {
     
     // 로그인 정보 확인
     if(request.body.login == 'aaron' && request.body.password == '1234') {
-        // 쿠키 생성
         response.cookie('auth', true);
         response.redirect('/');
     } else {
@@ -614,3 +610,53 @@ http.createServer(app).listen(52273, function () {
 });
 ```
 
+## Multer 미들웨어
+멀티미디어를 업로드 할 때 사용한다. 업로드 설정 등 더 자세한 내용은 [홈페이지](https://github.com/expressjs/multer) 참조.
+```
+var http = require('http');
+var express = require('express');
+var fs = require('fs');
+
+var app = express();
+
+var bodyParser = require('body-parser')
+app.use(bodyParser());
+
+// multer 미들웨어 추출
+var multer = require('multer');
+// upload 파일이 저장될 폴더 path 및 파일명 지정
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    } 
+});
+// multer 모듈 함수에 옵션을 설정후 미들웨어 리턴
+//var upload = multer({ dest: 'uploads/' });
+var upload = multer({ storage: storage });
+
+app.get('/', function(req, res){
+    fs.readFile('fileupload.html', function (error, data) {
+        res.send(data.toString()); 
+    });
+});
+
+// 단일 파일 업로드시
+//app.post('/', upload.single('image'), function(req, res) {
+// 다중 파일 업로드시
+app.post('/', upload.array('image', 4), function(req, res) {
+    console.log(req.body);
+    console.log(req.files);
+//    res.send(req.file);
+    res.send(req.files);
+});
+
+http.createServer(app).listen(52274, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+> NOTE_ UUID  
+> 같은 이름으로 파일이 덮어 씌여지는 경우가 있기 때문에 중복없는 아이디를 만드는 UUID(Universally Unique Identifier: RFC 4122 표준)를 활용하거나 데이터베이스에 파일을 저장하는것이 안전하다. [Node.js UUID](https://github.com/broofa/node-uuid)
