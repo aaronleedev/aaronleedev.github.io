@@ -77,7 +77,7 @@ http.createServer(app).listen(52273, function () {
 });
 ```
 
-> NOTE_ [JSON Formatter](https://aaronleedev.github.io/development/tool/2017/08/11/development-tool-json-formatter.html)  
+> NOTE_ [JSON Formatter](https://aaronleedev.github.io/developmenttool/2017/08/11/development-tool-json-formatter.html)  
 > 크롬에서 JSON 형식과 JSONP 형식을 보기 쉽게 보여주는 크롬 확장 프로그램
 
 ```
@@ -825,5 +825,5 @@ http.createServer(app).listen(52273, function () {
 });
 ```
 
-> NOTE_ [Tabbed Postman - REST Client](https://aaronleedev.github.io/development/tool/2017/08/18/development-tool-postman.html)  
+> NOTE_ [Tabbed Postman - REST Client](https://aaronleedev.github.io/developmenttool/2017/08/18/development-tool-postman.html)  
 > 크롬에서 HTTP 요청을 수행하는 확장 프로그램
