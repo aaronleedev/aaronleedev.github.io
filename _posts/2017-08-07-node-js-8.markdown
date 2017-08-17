@@ -719,12 +719,111 @@ RESTful 웹 서비스는 REST(REpresentational State Transfer)규정을 맞춰 �
 ### RESTful 웹 서비스의 구조
  
 | 경로 | /collection | collection |
-|--------|--------|--------|
+|-|-|-|
 | GET 방식 | 컬렉션을 조회한다 | 컬렉션의 특정 요소를 조회한다 |
-|--------|--------|--------|
+|-|-|-|
 | POST 방식 | 컬렉션에 새로운 데이터를 추가한다 | 사용하지 않는다 |
-|--------|--------|--------|
+|-|-|-|
 | PUT 방식 | 컬렉션 전체를 한꺼번에 변경한다 | 컬렉션에 특정 요소를 수정한다 |
-|--------|--------|--------|
+|-|-|-|
 | DELETE 방식 | 컬렉션 전체를 삭제한다 | 컬렉션의 특정 요소를 삭제한다 |
 
+사용자 관련 정보를 예를 들어면 다음과 같은 형태로 사용한다.
+- GET/user - 사용자 전체를 조회한다.
+- GET/user/273 - 273번 사용자를 조회한다.
+- POST/user - 사용자를 추가한다.
+- DELETE/user/273 - 273번 사용자를 삭제한다.
+
+### 예제로 만들 RESTful 웹 서비스
+
+| 라우트 | 경로 | 설명 |
+|-|-|-|
+| GET | /user | 모든 사용자 정보를 조회한다. |
+|-|-|-|
+| GET | /user/:id | 특정 사용자 정보를 조회한다. |
+|-|-|-|
+| POST | /user | 사용자를 추가한다. |
+|-|-|-|
+| PUT | /user/:id | 특정 사용자 정보를 수정한다. |
+|-|-|-|
+| DELETE | /user/:id | 특정 사용자 정보를 제거한다. |
+
+```
+// 필요 모듈 추출
+var http = require('http');
+var fs = require('fs');
+var express = require('express');
+var bodyParser = require('body-parser');
+
+// 더미 데이터베이스 구현
+var DummyDB = (function () {
+    var DummyDB = {};
+    var storage = {};
+    var count = 1;
+    
+    DummyDB.get = function (id) {
+        if(id) {
+            id = (typeof id == 'string') ? Number(id) : id;
+            
+            for(var = i in storage) {
+                if(storage[i].id == id)
+                    return storage[i];
+            }
+        } else {
+            return storage;    
+        }
+    };
+    
+    DummyDB.insert = function (data) {
+        data.id = count++;
+        storage.push(data);
+        return data;
+    };
+    
+    DummyDB.remove = function (id) {
+        id = (typeof id == 'string') ? Number(id) : id;
+        
+        for(var i in storage) {
+            if(storage[i].id == id) {
+                storage.splice(i, 1);
+                return true;
+            }
+        }
+        
+        return false;
+    };
+            
+    return DummyDB;
+})();
+
+// 서버 생성
+var app = express();
+
+// 미들웨어 설정
+app.use(bodyParser());
+
+// 라우터 설정
+app.get('/user', function (req, res) {
+    
+});
+app.get('/user/:id', function (req, res) {
+    
+});
+app.post('/user', function (req, res) {
+    
+});
+app.put('/user/:id', function (req, res) {
+    
+});
+app.dell('/user/:id', function (req, res) {
+    
+});
+
+// 서버 실행
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+> NOTE_ [Tabbed Postman - REST Client](https://aaronleedev.github.io/development/tool/2017/08/18/development-tool-postman.html)  
+> 크롬에서 HTTP 요청을 수행하는 확장 프로그램
