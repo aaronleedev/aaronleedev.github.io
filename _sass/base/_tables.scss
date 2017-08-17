@@ -6,23 +6,18 @@ table {
   width: 100%;
 }
 
-th::first-child,
-td::first-child {
-  border-left: 0px;
-}
-
 th {
   border-bottom: 1px solid darken($base-border-color, 15%);
   font-weight: 600;
   padding: $small-spacing 0;
   text-align: left;
-  border-left: 1px solid darken($base-border-color, 15%);
+//  border-left: 1px solid darken($base-border-color, 15%);
 }
 
 td {
   border-bottom: $base-border;
   padding: $small-spacing 0;
-  border-left: 1px solid darken($base-border-color, 15%);
+//  border-left: 1px solid darken($base-border-color, 15%);
 }
 
 tr,
@@ -30,3 +25,8 @@ td,
 th {
   vertical-align: middle;
 }
+
+//th::first-child,
+//td::first-child {
+//  border-left: 0px;
+//}
