@@ -716,7 +716,8 @@ http.createServer(app).listen(52273, function () {
 # RESTful 웹 서비스 개발
 RESTful 웹 서비스는 REST(REpresentational State Transfer)규정을 맞춰 만든 웹 서비스를 의미한다. REST 규정은 일관된 웹 서비스 인터페이스 설계를 위한 규정이다.
 
-### RESTful 웹 서비스의 구조  
+### RESTful 웹 서비스의 구조
+
 | column | column |  
 |--------|--------|  
 | 경로 | /collection | collection |  
