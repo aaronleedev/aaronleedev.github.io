@@ -653,10 +653,77 @@ app.post('/', upload.array('image', 4), function(req, res) {
     res.send(req.files);
 });
 
-http.createServer(app).listen(52274, function () {
+http.createServer(app).listen(52273, function () {
     console.log('Server Running at http://127.0.0.1:52273');
 });
 ```
 
 > NOTE_ UUID  
 > 같은 이름으로 파일이 덮어 씌여지는 경우가 있기 때문에 중복없는 아이디를 만드는 UUID(Universally Unique Identifier: RFC 4122 표준)를 활용하거나 데이터베이스에 파일을 저장하는것이 안전하다. [Node.js UUID](https://github.com/broofa/node-uuid)
+
+---
+
+# session 미들웨어 (-> express-session 미들웨어)
+쿠키는 정보를 클라이언트의 웹 브라우저에 저장하고 세션은 정보를 서버에 저장하는 기술이다. 일반적으로 세션은 클라이언트에 세션 식별자 쿠키를 부여하고 대응되는 서버에 위치하는 별도 저장소에 데이터를 저장한다. session 미들웨어는 세션을 쉽게 생성할 수 있게 도와주는 미들웨어이다. session 미들웨어를 사용하면 request 객체에 session 속성을 부여한다. express 4.x 버전 이후 [express-session 미들웨어](https://github.com/expressjs/session)을 직접 설치해 사용 해야한다.
+
+```
+var http = require('http');
+var express = require('express');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+
+var app = express();
+
+app.use(cookieParser());
+app.set('trust proxy', 1);
+app.use(session({
+    secret: 'secret key'
+}));
+app.use(function (req, res) {
+    var output = {};
+    output.cookies = req.cookies;
+    output.session = req.session;
+    
+    req.session.now = (new Date()).toUTCString();
+    
+    res.send(output);
+});
+
+http.createServer(app).listen(52273, function () {
+    console.log('Server Running at http://127.0.0.1:52273');
+});
+```
+
+![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-06.png)
+
+![_config.yml]({{ site.baseurl }}/images/2017-08-07-node-js-8-07.png)
+
+### *session 메서드 옵션*
+- name : 쿠키의 name 속성 지정 (default 'connect.sid')
+- store : 세션 저장소 지정 (default new MenoryStore instance)
+- cookie : 생성할 cookie와 관련된 정보를 지정 (defailt {path: '/', httpOnly: true, secure: false, maxAge: null})
+
+### *request 객체에 있는 session 속성의 메서드*
+- regenerate(callback) : 세션 다시 생성
+- destroy(callback) : 세션 제거
+- reload(callback) : 세션 다시 불러오기
+- save(callback) : 세션 저장
+
+> NOTE_ 더 자세한 sesstion 메서드 옵션과 request 객체에 있는 session 속성의 메서드 정보는 [express-session 미들웨어 홈페이지](https://github.com/expressjs/session)에서 확인 가능하다.
+
+---
+
+# RESTful 웹 서비스 개발
+RESTful 웹 서비스는 REST(REpresentational State Transfer)규정을 맞춰 만든 웹 서비스를 의미한다. REST 규정은 일관된 웹 서비스 인터페이스 설계를 위한 규정이다.
+
+### RESTful 웹 서비스의 구조
+| 경로        | /collection                   | collection               |
+|------------|-------------------------------|---------------------------|
+| GET 방식    | 컬렉션을 조회한다               | 컬렉션의 특정 요소를 조회한다 |
+|------------|-------------------------------|---------------------------|
+| POST 방식   | 컬렉션에 새로운 데이터를 추가한다  | 사용하지 않는다             |
+|------------|-------------------------------|---------------------------|
+| PUT 방식    | 컬렉션 전체를 한꺼번에 변경한다   | 컬렉션에 특정 요소를 수정한다 |
+|------------|-------------------------------|---------------------------|
+| DELETE 방식 | 컬렉션 전체를 삭제한다           | 컬렉션의 특정 요소를 삭제한다 |
+
