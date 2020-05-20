@@ -1,12 +1,13 @@
-.DS_Store
-
-# Compiled site
+# project
 _site
-.jekyll-cache/
-
-# Sass garbage
 .sass-cache
+.vagrant
 
-# Bundler
-.bundle/
-vendor/
+# general
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+Gemfile.lock
+
+beautiful-jekyll-theme-*.gem
