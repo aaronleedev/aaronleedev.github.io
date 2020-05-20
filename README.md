@@ -1,4 +1,4 @@
-# aaron lee dev blog [GO](https://aaronleedev.github.io/)
+# Aaron Lee Dev Blog [[Go]](https://aaronleedev.github.io/)
 
 ## reference code
 [centrarium](https://github.com/bencentra/centrarium)
