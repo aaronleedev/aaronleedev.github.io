@@ -13,8 +13,15 @@ author: Aaron Lee
 
 navbar-links:
   Category:
-    - 베트남어: 
+    - 베트남어: "posts"
   About Me: "aboutme"
+
+# ---  Category descriptions (for archive pages) --- #
+descriptions:
+  - cat: vietnamese
+    desc: "베트남어 공부 해볼까!"
+    catcolor: "#9785f3"
+    desccolor: "#c4bbf3"
 
 # --- Logo --- #
 
