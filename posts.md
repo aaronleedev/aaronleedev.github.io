@@ -7,12 +7,10 @@ main_nav: true
 
 {% for category in site.categories %}
   {% capture cat %}{{ category | first }}{% endcapture %}
+  <h2 id="{{cat}}">{{ cat | capitalize }}</h2>
   {% for desc in site.descriptions %}
     {% if desc.cat == cat %}
-  <h2 id="{{cat}}" style="color: {{ desc.catcolor }}">{{ cat | capitalize }}</h2>
-  <p class="desc" style="margin: -20px 0px 0px 10px;font-size: 18px;font-weight: bold;color: {{ desc.desccolor }}">{{ desc.desc }}</p>
-    {% else %}
-  <h2 id="{{cat}}" style="">{{ cat | capitalize }}</h2>
+      <p class="desc"><em>{{ desc.desc }}</em></p>
     {% endif %}
   {% endfor %}
   <ul class="posts-list">
