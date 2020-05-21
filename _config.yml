@@ -12,8 +12,9 @@ author: Aaron Lee
 # --- List of links in the navigation bar --- #
 
 navbar-links:
-  Category:
-    - 베트남어: "posts"
+# Category:
+#   - 베트남어: "posts"
+  Posts: "posts"
   About Me: "aboutme"
 
 # ---  Category descriptions (for archive pages) --- #
