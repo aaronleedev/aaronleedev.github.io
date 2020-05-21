@@ -10,7 +10,12 @@ layout: page
   {% for post in posts %}
   <article class="post-preview">
     <a href="{{ post.url | relative_url }}">
-      <h2 class="post-title" style="font-weight: 800;">{{ post.title }}</h2>
+      {% if post.categories.size > 0 %}
+        {% assign cat = post.categories[0] %}
+      <h2 class="post-title" style="font-weight: 800;color: {{ site.descriptions[cat].color }};">{{ post.title }}</h2>
+      {% else %}
+      <h2 class="post-title" style="font-weight: 800;color: #404040;">{{ post.title }}</h2>
+      {% endif %}
 
       {% if post.subtitle %}
         <h3 class="post-subtitle" style="font-weight: 700;color: #808080;font-size: 1.2rem;font-style: initial;margin: -0.2rem 0 0.3rem 0;">
@@ -43,13 +48,13 @@ layout: page
     </div>
 
     {% if post.categories.size > 0 %}
-    <div class="blog-tags" style="margin-bottom: -0.2rem;">
+    <div class="blog-tags" style="margin-bottom: -0.3rem;">
       Categories:
       {% for category in post.categories %}
       {% if site.descriptions[category] %}
-      <a href="{{ '/posts' | relative_url }}#{{- category -}}">{{- site.descriptions[category].name -}}</a>
+      <a style="color: {{- site.descriptions[category].color -}};" href="{{ '/posts' | relative_url }}#{{- category -}}">{{- site.descriptions[category].name -}}</a>
       {% else %}
-      <a href="{{ '/posts' | relative_url }}#{{- category -}}">{{- category -}}</a>
+      <a style="color: #00aae2;" href="{{ '/posts' | relative_url }}#{{- category -}}">{{- category -}}</a>
       {% endif %}
       {% endfor %}
     </div>
@@ -60,7 +65,7 @@ layout: page
       Tags:
       {% if site.link-tags %}
       {% for tag in post.tags %}
-      <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
+      <a style="color: #4cbbb9;" href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
       {% endfor %}
       {% else %}
         {{ post.tags | join: ", " }}
