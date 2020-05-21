@@ -10,18 +10,19 @@ description:
 author: Aaron Lee
 
 # --- List of links in the navigation bar --- #
-
 navbar-links:
-# Category:
-#   - 베트남어: "posts"
   Posts: "posts"
+  Tags: "tags"
+  Site:
+    - naver: "https://www.naver.com/"
   About Me: "aboutme"
 
-# ---  Category descriptions (for archive pages) --- #
+# ---  Category descriptions --- #
 descriptions:
-  - cat: vietnamese
+  vietnamese:
+    name: "베트남어"
     desc: "베트남어 공부 해볼까!"
-    catcolor: "#9785f3"
+    color: "#9785f3"
     desccolor: "#c4bbf3"
 
 # --- Logo --- #

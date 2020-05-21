@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "꼬베베1 - 2강"
-subtitle: by Aaron Lee
+subtitle: 베트남어의 자음을 배워보자. by Aaron Lee
 categories: vietnamese
 tags: 베트남어 꼬베베1
 cover-img: /assets/img/post-covers/vietnamese.png

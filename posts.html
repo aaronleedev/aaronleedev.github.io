@@ -1,0 +1,35 @@
+---
+layout: page
+title: 'Posts'
+---
+
+{% assign date_format = site.date_format | default: "%B %-d, %Y" %}
+
+{%- capture site_categories -%}
+    {%- for category in site.categories -%}
+        {{- category | first -}}{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+{%- endcapture -%}
+{%- assign categories_list = site_categories | split:',' | sort -%}
+
+{%- for category in categories_list -%}
+    <a href="#{{- category -}}" class="btn btn-primary tag-btn" style="background-color: {{ site.descriptions[category].color }};border-color: #ffffff;"><i class="fas fa-folder-open" aria-hidden="true"></i>&nbsp;{{- category -}}&nbsp;({{site.categories[category].size}})</a>
+{%- endfor -%}
+
+<div id="full-tags-list">
+{%- for category in categories_list -%}
+    <h2 id="{{- category -}}" class="linked-section" style="color: {{ site.descriptions[category].color }};">
+        <i class="fas fa-folder-open" aria-hidden="true"></i>
+        &nbsp;{{- category -}}&nbsp;({{site.categories[category].size}})
+    </h2>
+    <p style="color: {{ site.descriptions[category].desccolor }};margin: -0.2rem 0 0.8rem 1.0rem;font-weight: bold;">{{ site.descriptions[category].desc }}</p>
+    <div class="post-list">
+        {%- for post in site.categories[category] -%}
+            <div class="tag-entry">
+                <a style="color: #404040;font-weight: bold;" href="{{ post.url | relative_url }}" target="_self">{{- post.title -}}</a> - 
+                <time style="color: #808080;font-style: italic;font-size: 1rem;" datetime="{{- post.date | date_to_xmlschema -}}">{{- post.date | date: date_format -}}</time>
+            </div>
+        {%- endfor -%}
+    </div>
+{%- endfor -%}
+</div>

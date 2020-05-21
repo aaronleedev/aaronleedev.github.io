@@ -10,16 +10,16 @@ layout: page
   {% for post in posts %}
   <article class="post-preview">
     <a href="{{ post.url | relative_url }}">
-      <h2 class="post-title">{{ post.title }}</h2>
+      <h2 class="post-title" style="font-weight: 800;">{{ post.title }}</h2>
 
       {% if post.subtitle %}
-        <h3 class="post-subtitle">
+        <h3 class="post-subtitle" style="font-weight: 700;color: #808080;font-size: 1.2rem;font-style: initial;margin: -0.2rem 0 0.3rem 0;">
         {{ post.subtitle }}
         </h3>
       {% endif %}
     </a>
 
-    <p class="post-meta">
+    <p class="post-meta" style="font-size: 1.1rem;margin: -0.2rem 0 0.625rem 0;">
       {% assign date_format = site.date_format | default: "%B %-d, %Y" %}
       Posted on {{ post.date | date: date_format }}
     </p>
@@ -41,6 +41,19 @@ layout: page
         {% endif %}
       </div>
     </div>
+
+    {% if post.categories.size > 0 %}
+    <div class="blog-tags" style="margin-bottom: -0.2rem;">
+      Categories:
+      {% for category in post.categories %}
+      {% if site.descriptions[category] %}
+      <a href="{{ '/posts' | relative_url }}#{{- category -}}">{{- site.descriptions[category].name -}}</a>
+      {% else %}
+      <a href="{{ '/posts' | relative_url }}#{{- category -}}">{{- category -}}</a>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
 
     {% if post.tags.size > 0 %}
     <div class="blog-tags">
